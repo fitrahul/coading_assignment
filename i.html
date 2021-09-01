@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="" id="movie" placeholder="Type Movie Name">
+    <button onclick="getMovie()">submit</button><br/><hr>
+    <div id="main" style="width: 100px; margin: auto;">
+        <!-- <img id="poster"></img>
+        <div id="rating"></div>
+        <div id="title"></div>
+        <div id="rec"></div> -->
+    </div>
+</body>
+</html>
+<script>
+    async function getMovie() {
+    try {
+        let movie = document.getElementById("movie").value;
+        let response = await fetch(`http://www.omdbapi.com/?t=${movie}&apikey=a468c50f`);
+        let data = await response.json();
+        console.log("data",data);
+        getData(data) ;
+    }
+    catch (error) {
+        console.log("error", error);
+    }
+}
+function getData(data) {
+    if (data.Response == 'False') {
+        alert("movie not found");
+    }
+    var main = document.getElementById("main");
+    main.innerHTML = "";
+    // let poster = document.getElementById("poster");
+    // poster.innerHTML = "";
+    // poster.src = data.Poster;
+    // let rating = document.getElementById("rating");
+    // rating.innerHTML = data.imdbRating;
+    var img = document.createElement("img");
+    img.src = data.Poster;
+    var rating = document.createElement("p");
+    rating.innerHTML = data.imdbRating;
+    main.append(img, rating);
+    if (data.imdbRating > 5) {
+        var d = document.createElement("p");
+        d.textContent = "recomended";
+        main.append(d);
+    }
+}
+</script>
