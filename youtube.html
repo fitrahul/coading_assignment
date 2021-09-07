@@ -33,10 +33,34 @@
 
 <script>
     // videos on home
-    // fetch()
+
+    // step-1. get video
+    let home_div = document.getElementById("home_video")
+    fetch(`https://youtube.googleapis.com/youtube/v3/search?maxResults=20&type=video&key=AIzaSyCj8aKtTJf31x48PiUBzEFKyeOY3-yhl9A`)
+    .then((res) => {
+        return res.json();
+    })
+    .then((res) => {
+        console.log(res);
+        for ({id: { videoId }}of res.items) {    // got videoId
+            // console.log("videoId",videoId);
+            let video_frame = document.createElement("iframe");
+            video_frame.setAttribute("class" , "show");
+            video_frame.src = `https://www.youtube.com/embed/${videoId}`;
+            video_frame.allow = `fullscreen`;
+            home_div.appendChild(video_frame);
+    }
+    })
+        .catch((err) => {
+        console.log(err)
+    })
+    // step-2. show video
+    
+
     // videos on search
     let div = document.getElementById("video_div")
     async function searchVideo() {
+        home_div.innerHTML = "";
         // 1. search for video
         let video = document.getElementById("video").value;
         let res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${video}tesla&type=video&key=AIzaSyCj8aKtTJf31x48PiUBzEFKyeOY3-yhl9A&maxResults=20`);
