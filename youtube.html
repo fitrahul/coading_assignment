@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #navbarr {
+        display: flex;
+        width: 50%;
+        margin: auto;
+    }
+    #video {
+        width: 100%;
+    }
+    #video_div {
+        display: grid;
+        grid-template-columns: 15% 15% 15% 15%;
+        grid-gap: 10%;
+    }
+</style>
+<body>
+    <div id="navbarr">
+        <input type="text" name="" id="video" placeholder="Search">
+        <button onclick="searchVideo()"><i class="fas fa-search">&#128269</i></button>
+    </div><br><hr/><br>
+    <div id="video_div"></div>
+    <div id="home_video"></div>
+</body>
+</html>
+
+<script>
+    // videos on home
+    // fetch()
+    // videos on search
+    let div = document.getElementById("video_div")
+    async function searchVideo() {
+        // 1. search for video
+        let video = document.getElementById("video").value;
+        let res = await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${video}tesla&type=video&key=AIzaSyCj8aKtTJf31x48PiUBzEFKyeOY3-yhl9A&maxResults=20`);
+        let data = await res.json();
+        console.log(data);
+
+        // 2. get the video id and show on screen
+        for ({id: { videoId },}of data.items) {    // got videoId
+            // console.log("videoId",videoId);
+            let video_frame = document.createElement("iframe");
+            video_frame.setAttribute("class" , "show");
+            video_frame.src = `https://www.youtube.com/embed/${videoId}`;
+            video_frame.allow = `fullscreen`;
+            div.appendChild(video_frame);
+        }
+    }
+</script>
